@@ -2,7 +2,6 @@
 Elmware SDK: For Building Containers to Run on Elmware 
 ========================
 
-A fast and modern Python SOAP client
 
 Highlights:
  * Compatible with Python 3
