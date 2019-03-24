@@ -22,7 +22,7 @@ Installation
 
 .. code-block:: bash
 
-    pip install elmware-sdk
+    pip install elmsdk
 
 
 Usage
