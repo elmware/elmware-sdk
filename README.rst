@@ -29,9 +29,10 @@ Usage
 -----
 .. code-block:: python
 
-    import elmware-sdk as ELM
+    from elmsdk import ELMSDK
 
-    status = ELM.begin_run(instance_key)
+    elm = ELMSDK(instance_key)
+    staus = elm.begin_run()
 
 
 

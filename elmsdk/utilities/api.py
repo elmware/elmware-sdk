@@ -2,7 +2,7 @@
 #
 import requests
 from requests.exceptions import ConnectionError
-from configuration import settings
+from elmsdk.configuration import settings
 from .base_functions import ElmwareError
 import time
 import json
