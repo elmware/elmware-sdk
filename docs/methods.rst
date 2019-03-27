@@ -491,9 +491,9 @@ file_upload – bool – If this is True, the user will be prompted to upload a 
 
 inputs – list – this is a list of inputs required from the user before the next run.  Each input should be a dictionary of one of two formats
 
-1) {‘name’:name} – this will display to the user as a free form text entry field.  The text entry from the user will be returned to the begin_run method with key = name
+1) {‘name’:name, 'display_name':display_name} – this will display to the user as a free form text entry field.  The text entry from the user will be returned to the begin_run method with key = name.  The display_name field is optional.  If set, the user will see the display name rather than the actual name of the field.
 
-2) {‘name’:name, ‘options’: [[‘value1’, ‘display1’], [‘value2’, ‘display2’]]} - This will display to the user as a select field.  The user will have to choose between the different options.  They will see the second value in each list (the display value), however the begin_run method will receive the first value in each list if it is selected.
+2) {‘name’:name, 'display_name':display_name, ‘options’: [[‘value1’, ‘display1’], [‘value2’, ‘display2’]]} - This will display to the user as a select field.  The user will have to choose between the different options.  They will see the second value in each list (the display value), however the begin_run method will receive the first value in each list if it is selected.  The display_name field is optional.  If set, the user will see the display name rather than the actual name of the field.
 
 
 
