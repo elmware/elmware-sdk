@@ -96,7 +96,7 @@ None
 
 func – A string representation of the function that the container should run. The next function to be run is specified at the end of the run using the end_run method.  NOTE: If func is returned as an empty string (func == ‘’), this means that the container is being shut down. *However*, it is not advisable to have any sort of required break-down or cleanup procedure that runs when this happens.  This is because, when the empty string is returned, a separate command is issued at the system level to shut down the container.  There is no guarantee that any sort of cleanup procedure will finish before the container shutdown occurs. 
 
-inputs – A dictionary of keys and values.  Desired user inputs for the next run are specified at the end of the run using the end_run method.  If a file was uploaded by the user, this dictionary will contain a ‘file_upload’ key.  The value will be a download link for the file.
+inputs – A dictionary of keys and values.  Desired user inputs for the next run are specified at the end of the run using the end_run method.  If a file was uploaded by the user, this dictionary will contain a ‘file_upload’ key.  The value will be a file key that can be used to generate a download link using the file_download_link method.
 
 role – A string representation of the role the container is currently functioning under.  Typically these will either be ‘primary’ or ‘cron’.  Primary means the container is currently being run by a user.  Cron means that the container has been triggered by a cron job, and has no active user.  
 
