@@ -304,9 +304,9 @@ is_perm -bool (default = False) – If this is set to True, the file you upload 
 
 ``Output``
 
-{‘file_key’:str}
+str or bool
 
-This is a string that can be used to retrieve the uploaded file.
+This is a string that can be used to retrieve the uploaded file. It returns False if the upload failed.
 
 
 
@@ -327,7 +327,7 @@ This method is used to upload a file to storage.  It can also be used in conjunc
     f = open('new_file', 'w')
     f.write('some data')
     f.close()
-    key = elm.file_upload(f.name)['file_key']
+    key = elm.file_upload(f.name)
     some_function_to_store_the_key(key)
 
 
@@ -350,9 +350,9 @@ is_perm -bool (default = False) – This determines which storage bucket to pull
 
 ``Output``
 
-{‘file_link’:str}
+str or bool
 
-file_link - This is a url that can be used to download the file.  It requires no authentication, but the link is only valid for 100 seconds.  It can be downloaded locally, or passed to the user.
+ This returns a url that can be used to download the file.  It requires no authentication, but the link is only valid for 100 seconds.  It can be downloaded locally, or passed to the user. It returns False if the link doesn't exist.
 
 
 
@@ -372,7 +372,7 @@ This is the primary method of retrieving static files that were stored earlier w
 
     elm = ELMSDK(instance_key)
     key =some_function_to_retreive a previous_file_key()
-    url = elm.file_download_link(key, 'myfile.txt')['file_link']
+    url = elm.file_download_link(key, 'myfile.txt')
     response = urllib.request.urlopen(url)
     data = response.read()
 

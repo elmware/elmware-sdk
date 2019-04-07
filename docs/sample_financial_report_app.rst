@@ -48,7 +48,7 @@ This is the primary python app.
         key_check = elm.db_read(1, ['name', 'eq', 'instruction_key'], is_global=True)
         if not key_check:
             return elm.end_run(message="No instruction manual has been uploaded.")
-        link = elm.elm.file_download_link(key_check[0]['key'], 'instructions.docx', is_perm=True)['file_link']
+        link = elm.elm.file_download_link(key_check[0]['key'], 'instructions.docx', is_perm=True)
         return elm.end_run(link=link)
 
 
@@ -76,7 +76,7 @@ This is the primary python app.
         with open(path, 'wb') as w:
             w.write(response.read())
         #upload the file to static storage
-        key = elm.file_upload(path, is_perm=True)['file_key']
+        key = elm.file_upload(path, is_perm=True)
         #create a record of the file in the db table 1.  is_global since this should be acessible to all users
         creates = []
         updates = []
@@ -171,8 +171,8 @@ This is the primary python app.
         writer = pd.ExcelWriter(xcel_path, engine='xlsxwriter')
         df.to_excel(writer, sheet_name='Sheet1', index=False)
         writer.save()
-        key = elm.file_upload(xcel_path)['file_key']
-        link = elm.file_download_link(key, 'report.xlsx')['file_link']
+        key = elm.file_upload(xcel_path)
+        link = elm.file_download_link(key, 'report.xlsx')
         return elm.end_run(message = 'Your report has been generated. Your download will begin shortly.', link=link)
 
 
