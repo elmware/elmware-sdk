@@ -450,8 +450,10 @@ This method should be called if an error occurs during execution of code in the 
         staus = elm.begin_run()
         try:
             some_main_task_function()
-        except Exception:
-            elm.report_error('\n'.join(traceback.extract_stack()))
+        except Exception as e:
+            error_message = ''.join(traceback.extract_stack().format())
+            error_message += repr(e)
+            elm.report_error(error_message)
             break
         elm.end_run(message=”job done”)
 

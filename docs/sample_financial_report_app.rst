@@ -213,8 +213,10 @@ This is the primary python app.
                     break
 
 
-            except
-                elm.report_error('\n'.join(traceback.extract_stack()))
+            except Exception as e:
+                error_message = ''.join(traceback.extract_stack().format())
+                error_message += repr(e)
+                elm.report_error(error_message)
                 break
 
     if __name__ == '__main__':
