@@ -19,6 +19,9 @@ API_RETRY_DELAY = 5
 #sleep time while waiting for task from server in seconds
 TASK_WAIT_SLEEP = 3
 
+#request timeout
+TIMEOUT_SETTINGS = (3.05, 60)
+
 #Headers used for get requests
 GET_HEADERS = {
     'Content-type': 'application/json'

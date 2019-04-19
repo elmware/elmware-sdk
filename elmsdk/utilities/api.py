@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -
 #
 import requests
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, Timeout
 from elmsdk.configuration import settings
 from .base_functions import ElmwareError
 import time
@@ -58,8 +58,8 @@ class APIRequests:
         if retry_depth >= settings.MAX_CONNECTIVITY_RETRY:
             raise ElmwareRequestError("Unable to connect to the server.")
         try:
-            return self.parse_response(requests.get(self.build_url(target, url_override=url_override), params=args, headers=settings.GET_HEADERS))
-        except (ConnectionError, ConnectionResetError):
+            return self.parse_response(requests.get(self.build_url(target, url_override=url_override), params=args, timeout=settings.TIMEOUT_SETTINGS, headers=settings.GET_HEADERS))
+        except (ConnectionError, ConnectionResetError, Timeout):
             time.sleep(settings.API_RETRY_DELAY)
             return self.get_request_inner(target, args, url_override=url_override, retry_depth=retry_depth + 1)
 
@@ -70,8 +70,8 @@ class APIRequests:
         if retry_depth >= settings.MAX_CONNECTIVITY_RETRY:
             raise ElmwareRequestError("Unable to connect to the server.")
         try:
-            return self.parse_response(requests.post(self.build_url(target, url_override=url_override), json=payload, headers=settings.POST_HEADERS))
-        except (ConnectionError, ConnectionResetError):
+            return self.parse_response(requests.post(self.build_url(target, url_override=url_override), json=payload, timeout=settings.TIMEOUT_SETTINGS, headers=settings.POST_HEADERS))
+        except (ConnectionError, ConnectionResetError, Timeout):
             time.sleep(settings.API_RETRY_DELAY)
             return self.post_request_inner(target, payload, url_override=url_override, retry_depth=retry_depth + 1)
         except TypeError:
