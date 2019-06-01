@@ -40,17 +40,17 @@ class ELMSDK:
 
     def find_callback_url(self):
         """
-        This method returns a callback url that can be used for external webhooks, as well as retreival key
+        This method returns a callback url that can be used for external webhooks, an email address that will forward to the same webhood, and a retreival key
 
-        returns a dictionary with keys url and url_key
+        returns a dictionary with keys url key, and email
         """
         results = APIRequests.get_request('find_callback_url', self.instance_key, dev_mode=self.dev_mode, url_override=self.url_override)
-        return {k:results.get(k,None) for k in ['url','key'] if results.get(k, None) is not None}
+        return {k:results.get(k,None) for k in ['url','key','email'] if results.get(k, None) is not None}
 
     
     def callback_url_results(self, url_key):
         """
-        This method returns a callback url that can be used for external webhooks, as well as retreival key
+        This method returns a list of requests that have been made to the externally facing url or email address associated with the url_key.  Once this method is called, the store of requests will be emptied.  
 
         returns a dictionarty with key data
         """
@@ -58,13 +58,13 @@ class ELMSDK:
         return {k:results.get(k,None) for k in ['data'] if results.get(k, None) is not None}
 
     
-    def db_read(self, table_number, query, is_global=False):
+    def db_read(self, table_number, query, is_global=False, order_by=False, limit=False):
         """
-        This is a method to read from the db.  table number must be an integer.  query must be a list.  is_global determines whether the table is shared between different users of the same tool
+        This is a method to read from the db.  table number must be an integer.  query must be a list.  is_global determines whether the table is shared between different users of the same tool. limit is the max number of records returned.  order_by, if provided, is a string representing the key that is used in order to determine the sort order of the result. A negative sign as a first character in the string reverses the sort order.  
 
         returns a list of dictionaries
         """
-        results = APIRequests.post_request('db_read', self.instance_key, data={'table':table_number, 'query':query, 'is_global':is_global}, dev_mode=self.dev_mode, url_override=self.url_override)
+        results = APIRequests.post_request('db_read', self.instance_key, data={'table':table_number, 'query':query, 'is_global':is_global, 'order_by':order_by, 'limit':limit}, dev_mode=self.dev_mode, url_override=self.url_override)
         return results.get('data', [])
 
 

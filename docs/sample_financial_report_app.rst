@@ -92,10 +92,10 @@ This is the primary python app.
 
 
     def parse_endpoint_data(key, token_check, db_creates, db_updates):
-        data = elm.callback_url_results(key)
+        data = elm.callback_url_results(key)['data']
         if not data:
             return False
-        data = json.loads(data)
+        data = data[-1]
         token = data['form_data'].get('token', False)
         if not token:
             return False

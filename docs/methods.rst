@@ -136,16 +136,18 @@ None
 
 ``Output``
 
-{‘url’:str, ‘key’:str}
+{‘url’:str, ‘key’:str, 'email':str}
 
-url – This is a externally facing URL that is able to request incoming web traffic.  It can be used to process callbacks.
+url – This is a externally facing URL that is able to request incoming web traffic.  It can be used to process callbacks. Requests sent to it will be accessible to the app by using the key
 
 key – This is a key that can be used to access the last request made to the related url.  It should be stored for later use.
+
+email - This is an externally facing email address.  Email sent to it will be accessible to the app using the key.
 
 
 ``Usage``
 
-This method is used to find a callback url that can be used for webhooks from external resources.  For example, the oauth process requires an incoming request from an external source. Using this method, a container is able to open up an external url to incoming traffic, and then later access details of the latest request that was made to that url.
+This method is used to find a callback url that can be used for webhooks from external resources.  For example, the oauth process requires an incoming request from an external source. Using this method, a container is able to open up an external url to incoming traffic, and then later access details of the latest request that was made to that url.  It is also able to accept incoming email messages at the address returned.
 
 
 `EX:`
@@ -170,15 +172,15 @@ url_key – str – a key obtained from a previous call to the ‘find_callback_
 
 ``Output``
 
-{‘data’:str}
+{‘data’:list}
 
-data – This is a json string representing the data contained in the last request made to the callback_url linked to the url_key.  If no request has been made in the last 24 hours, data will be an empty string.
+data – This is a list of dictionaries, representing, in chronological order, the data contained in the requests made to the callback_url or email address linked to the url_key.  If no request has been made in the last 24 hours, data will be an empty string. Once this data has been accessed once, it will be deleted from the server. 
 
 
 
 ``Usage``
 
-This method is used to retrieve the data contained in requests made to the externally facing endpoints exposed using the ‘find_callback_url’ method.  NOTE: Request data is only stored for 24 hours.
+This method is used to retrieve the data contained in requests made to the externally facing endpoints exposed using the ‘find_callback_url’ method.  NOTE: Request data is only stored for 24 hours.  Accessing it once will delete it on the server.  So this method should be called only once per run and the results stored if important
 
 
 
@@ -187,13 +189,12 @@ This method is used to retrieve the data contained in requests made to the exter
 .. code-block:: python
 
     from elmsdk import ELMSDK
-    import json
 
     elm = ELMSDK(instance_key)
     url_key = some_retreival_function()
     webhook_results = elm.callback_url_results(url_key)
     if webhook_results['data']:
-        hook_data = json.loads(webhook_results['data'])
+        hook_data = webhook_results['data']
         do_something_with_data(hook_data)
 
 
@@ -255,11 +256,15 @@ the allowed operations are:
 
 table_number -int – The integer representing which table you want to query.
 
-query – list – A database query structured in the elmware standard query format
+query – list – A database query structured in the elmware standard query format.  To search for 'all', and empty list should be provided
 
  ``key word arguments``
 
 is_global -bool (default = False) – If this is set to True, the query will be performed on a cross installation database (ie for all users using this container)  If False, it will be performed on the database used by this user only.
+
+order_by -str (default = False) - If this is set to a string, the results returned will be ordered by that key field. Results that do not have that key field will be excluded. A minus sign as the first charcter in the string indicates a reversal of order.  For example, if the query was elm.db_read(1, [], order_by='-age') might return [{'name':'john', 'age':10},  {'name':'bill', 'age':5}] 
+
+limit - int (default = False) - The maximum number of results to be returned
 
 
 ``Output``
@@ -283,7 +288,7 @@ This method is used to retrieve data from the elmware database assigned to this 
     from elmsdk import ELMSDK
 
     elm = ELMSDK(instance_key)
-    data = elm.db_read(1, ['name', 'eq', 'bob'])
+    data = elm.db_read(1, ['name', 'eq', 'bob'], limit=3)
     for d in data:
         do_something(d)
 
