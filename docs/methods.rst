@@ -142,12 +142,12 @@ url – This is a externally facing URL that is able to request incoming web tra
 
 key – This is a key that can be used to access the last request made to the related url.  It should be stored for later use.
 
-email - This is an externally facing email address.  Email sent to it will be accessible to the app using the key.
+email - This is an externally facing email address.  Email sent to it will be accessible to the app using the key. This does not work in test mode.
 
 
 ``Usage``
 
-This method is used to find a callback url that can be used for webhooks from external resources.  For example, the oauth process requires an incoming request from an external source. Using this method, a container is able to open up an external url to incoming traffic, and then later access details of the latest request that was made to that url.  It is also able to accept incoming email messages at the address returned.
+This method is used to find a callback url that can be used for webhooks from external resources.  For example, the oauth process requires an incoming request from an external source. Using this method, a container is able to open up an external url to incoming traffic, and then later access details of the latest request that was made to that url.  It is also able to accept incoming email messages at the address returned. NOTE: The email address only works in production, not in test mode.
 
 
 `EX:`
