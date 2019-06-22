@@ -67,7 +67,7 @@ This is the primary python app.
         """
         This is the setter function to set the instruction manual. It returns a message to the user stating the the upload was successful.  If no file was uploaded, it will invoke the getter function again.
         """
-        link_key = status['input'].get('file_upload', '')
+        link_key = status['input'].get('file_upload', {}).get('key', '')
         if not link_key:
             return set_instructions_getter(elm)
         link = elm.file_download_link(link_key, 'file')
