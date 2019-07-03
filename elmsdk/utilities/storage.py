@@ -11,9 +11,6 @@ class ElmwareStorageError(ElmwareError):
 
 
 class StoreFile:
-
-
-
     @classmethod
     def store_file(cls, upload_url, file_path):
         """
@@ -21,7 +18,7 @@ class StoreFile:
         """
         outcome = False
         try:
-            with open(file_path, 'rb') as data:
+            with open(file_path, "rb") as data:
                 if requests.put(upload_url, data=data).status_code == 200:
                     outcome = True
         except FileNotFoundError:
@@ -29,5 +26,5 @@ class StoreFile:
         except (HTTPError, ConnectionError):
             raise ElmwareStorageError("Unable to Connect to file server")
         if not outcome:
-            raise ElmwareStorageError('Failed to store file.')
+            raise ElmwareStorageError("Failed to store file.")
         return True
