@@ -5,18 +5,16 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="elmsdk",
-    version="0.1.0",
+    version="0.2.0",
     author="Elmware",
     author_email="support@elmware.com",
     description="SDK for running docker containers on elmware",
-    license='MIT',
+    license="MIT",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/elmware/elmware-sdk",
     packages=setuptools.find_packages(),
-    install_requires=[
-          'requests',
-      ],
+    install_requires=["requests"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

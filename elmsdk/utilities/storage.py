@@ -19,7 +19,15 @@ class StoreFile:
         outcome = False
         try:
             with open(file_path, "rb") as data:
-                if requests.put(upload_url, data=data).status_code == 200:
+                headers = {}
+                if ("windows" in upload_url) or ("azure" in upload_url):
+                    headers["x-ms-blob-type"] = "BlockBlob"
+                if (
+                    str(
+                        requests.put(upload_url, data=data, headers=headers).status_code
+                    )[0]
+                    == "2"
+                ):
                     outcome = True
         except FileNotFoundError:
             raise ElmwareStorageError("Invalid File Path")
