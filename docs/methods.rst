@@ -571,7 +571,7 @@ This method must be called at the end of a run.  It contains all the information
             else:
                 to_add = {'vehicle':v}
                 to_add.update(update)
-                creates.append(to_add)
+                creates.append({'table':1, 'is_global':False, 'data':to_add})
             elm.end_run(message = 'Your vehicle information has been saved', db_updates = updates, db_creates = creates)
         
 
