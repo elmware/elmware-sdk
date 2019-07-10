@@ -567,7 +567,7 @@ This method must be called at the end of a run.  It contains all the information
             v = status['inputs']['vehicle']
             data_ob = elm.db_read(1, query)
             if data_ob:
-                updates.append({'table':1, 'query':query, is_global:False, update:update })
+                updates.append({'table':1, 'query':query, 'is_global':False, 'update':update })
             else:
                 to_add = {'vehicle':v}
                 to_add.update(update)
