@@ -294,6 +294,43 @@ This method is used to retrieve data from the elmware database assigned to this 
 
 
 
+**modify_db_state**
+
+
+
+ ``key word arguments``
+
+db_creates – list (default = []) - This is a list of entries into the database for the container.  To avoid race conditions, all db operations that change state should ideally be performed at the end of the run (except in cases where order of operations is important).  Each entry should be of the format {‘table’:int, is_global:bool, data: dict} where table represents the table you want to insert into, is_global is a boolean that determines whether the data written into the table will be readable by other users of the same container (defaults to False) and data is the data you want to insert.  Data must be a json serializable dictionary.
+
+db_updates – list (default= []) This is a list of updates to preform on the container’s database.  To avoid race conditions, all db operations that change state should ideally be performed at the end of the run (except in cases where order of operations is important).  Each entry should be of the format {‘table’:int, is_global:bool, update: dict, query:list} where table represents the table you want to insert into,  , is_global is a boolean that determines whether the data written into the table will be readable by other users of the same container (defaults to False), update is a dictionary representing updates you want to make to the object, and query is a list in the elmware standard query format representing which objects should be updated.
+
+db_deletes – list (default = []) This is a list of deletions that should be made on the container’s database.   To avoid race conditions, all db operations that change state should ideally be performed at the end of the run (except in cases where order of operations is important).  Each entry should be of the format {‘table’:int, is_global:bool,  query:list} where table represents the table you want to delete objects from,  , is_global is a boolean that determines whether the data written into the table will be readable by other users of the same container (defaults to False),  and query is a list in the elmware standard query format representing which objects should be deleted.
+
+
+``Output``
+
+None
+
+
+``Usage``
+
+*WARNING* The elmware database is eventually consistent.  This method should only be used in cases where the order of operations is important (ex if you need to make sure deletes happen before creates), or in cases where there is too much data to hold in memory until the end of the run.  Otherwise, it is usually better to pass all operations that change the state of the db to the end_run method.  
+
+This method is used to modify the state of the database.  It can be passed lists of create, update, and delete operations that will be applied to the database.  These should be structured using the same format as the data passed to the end_run method.   The order of operations cannot be guaranteed. 
+
+
+
+``EX``
+
+.. code-block:: python
+
+    from elmsdk import ELMSDK
+
+    elm = ELMSDK(instance_key)
+    elm.modify_db_state (db_creates=[{'table':1, 'is_global':False, 'data':{'name':'bob'}}])
+
+
+
 **file_upload**
 
 
@@ -480,11 +517,11 @@ link -string (default = ‘’) – If a value other than empty string is entere
 
 continue_run – dict/bool (default=False) – If this value is False, the run will end after the results are returned to the user.  If a dictionary, the user will be prompted to input the fields defined in the dictionary.  The results will then be fed back to the process next time the start_run method is called. More info can be found below.
 
-db_creates – list (default = []) - This is a list of entries into the database for the container.  To avoid race conditions, all db operations that change state must be performed at the end of the run.  Each entry should be of the format {‘table’:int, is_global:bool, data: dict} where table represents the table you want to insert into, is_global is a boolean that determines whether the data written into the table will be readable by other users of the same container (defaults to False) and data is the data you want to insert.  Data must be a json serializable dictionary.
+db_creates – list (default = []) - This is a list of entries into the database for the container.  To avoid race conditions, all db operations that change state should ideally be performed at the end of the run (except in cases where order of operations is important).  Each entry should be of the format {‘table’:int, is_global:bool, data: dict} where table represents the table you want to insert into, is_global is a boolean that determines whether the data written into the table will be readable by other users of the same container (defaults to False) and data is the data you want to insert.  Data must be a json serializable dictionary.
 
-db_updates – list (default= []) This is a list of updates to preform on the container’s database.  To avoid race conditions, all db operations that change state must be performed at the end of the run.  Each entry should be of the format {‘table’:int, is_global:bool, update: dict, query:list} where table represents the table you want to insert into,  , is_global is a boolean that determines whether the data written into the table will be readable by other users of the same container (defaults to False), update is a dictionary representing updates you want to make to the object, and query is a list in the elmware standard query format representing which objects should be updated.
+db_updates – list (default= []) This is a list of updates to preform on the container’s database.  To avoid race conditions, all db operations that change state should ideally be performed at the end of the run (except in cases where order of operations is important).  Each entry should be of the format {‘table’:int, is_global:bool, update: dict, query:list} where table represents the table you want to insert into,  , is_global is a boolean that determines whether the data written into the table will be readable by other users of the same container (defaults to False), update is a dictionary representing updates you want to make to the object, and query is a list in the elmware standard query format representing which objects should be updated.
 
-db_deletes – list (default = []) This is a list of deletions that should be made on the container’s database.   To avoid race conditions, all db operations that change state must be performed at the end of the run.  Each entry should be of the format {‘table’:int, is_global:bool,  query:list} where table represents the table you want to delete objects from,  , is_global is a boolean that determines whether the data written into the table will be readable by other users of the same container (defaults to False),  and query is a list in the elmware standard query format representing which objects should be deleted.
+db_deletes – list (default = []) This is a list of deletions that should be made on the container’s database.   To avoid race conditions, all db operations that change state should ideally be performed at the end of the run (except in cases where order of operations is important).  Each entry should be of the format {‘table’:int, is_global:bool,  query:list} where table represents the table you want to delete objects from,  , is_global is a boolean that determines whether the data written into the table will be readable by other users of the same container (defaults to False),  and query is a list in the elmware standard query format representing which objects should be deleted.
 
 
 ``continue run additional info``

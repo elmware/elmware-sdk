@@ -108,6 +108,19 @@ class ELMSDK:
         )
         return results.get("data", [])
 
+    def modify_db_state(self, db_creates=[], db_updates=[], db_deletes=[]):
+        """
+        This is a method to run any sort of db state change operations before the end of the run. all kwargs should be a list of entries.  Returns None
+        """
+        APIRequests.change_db_state(
+            self.instance_key,
+            db_creates=db_creates,
+            db_updates=db_updates,
+            db_deletes=db_deletes,
+            dev_mode=self.dev_mode,
+            url_override=self.url_override,
+        )
+
     def file_upload(self, path, is_perm=False):
         """
         This method will upload a file to storage.  It returns a key that can be used to retreive the file later.  setting is_perm to true will cause the file to persist indefinitely.  otherwise it is deleted after 24 hours.
@@ -173,14 +186,11 @@ class ELMSDK:
         This method ends the current run.  After it is invoked, the program should then call begin run again.  If error != False, it should be a string, such as a stack trace.  The error will be stored and the message will be returned to the client as an error message.  Any continue_run arguments will be ignored. Returns True if it doesn't error.
         """
         if db_deletes or db_creates or db_updates:
-            APIRequests.post_request(
-                "save_data",
+            APIRequests.change_db_state(
                 self.instance_key,
-                data={
-                    "db_creates": db_creates,
-                    "db_updates": db_updates,
-                    "db_deletes": db_deletes,
-                },
+                db_creates=db_creates,
+                db_updates=db_updates,
+                db_deletes=db_deletes,
                 dev_mode=self.dev_mode,
                 url_override=self.url_override,
             )

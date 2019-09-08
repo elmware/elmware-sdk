@@ -25,3 +25,6 @@ TIMEOUT_SETTINGS = (3.05, 60)
 GET_HEADERS = {"Content-type": "application/json"}
 
 POST_HEADERS = {"Content-type": "application/json"}
+
+# maximum number of db modification operations to be batched together.
+MAX_DB_BATCH_SIZE = 1000

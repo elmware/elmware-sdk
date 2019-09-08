@@ -115,3 +115,41 @@ class APIRequests:
         """
         operator = cls(instance_key, dev_mode=dev_mode)
         return operator.post_request_inner(target, data, url_override=url_override)
+
+    @classmethod
+    def change_db_state(
+        cls,
+        instance_key,
+        db_creates=[],
+        db_updates=[],
+        db_deletes=[],
+        dev_mode=False,
+        url_override=False,
+    ):
+
+        """
+        handler for all operations that change the db state. 
+        """
+        data = dict(db_creates=db_creates, db_updates=db_updates, db_deletes=db_deletes)
+        for op_key in data:
+            while len(data[op_key]) > settings.MAX_DB_BATCH_SIZE:
+                run_now = data[op_key][: settings.MAX_DB_BATCH_SIZE]
+                data[op_key] = data[op_key][settings.MAX_DB_BATCH_SIZE :]
+                cls.post_request(
+                    "save_data",
+                    instance_key,
+                    data={op_key: run_now},
+                    dev_mode=dev_mode,
+                    url_override=url_override,
+                )
+        cls.post_request(
+            "save_data",
+            instance_key,
+            data={
+                "db_creates": data["db_creates"],
+                "db_updates": data["db_updates"],
+                "db_deletes": data["db_deletes"],
+            },
+            dev_mode=dev_mode,
+            url_override=url_override,
+        )
