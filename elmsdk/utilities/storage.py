@@ -16,20 +16,18 @@ class StoreFile:
         """
         method for uploading files from container to storage
         """
-        files = False
         outcome = False
         try:
             with open(file_path, "rb") as data:
                 headers = {}
                 if ("windows" in upload_url) or ("azure" in upload_url):
                     headers["x-ms-blob-type"] = "BlockBlob"
-                    files = {"file": data}
-                if files:
-                    req = requests.put(upload_url, files=files, headers=headers)
-                else:
-                    # legacy non-multi part for s3 upload
-                    req = requests.put(upload_url, data=data, headers=headers)
-                if str(req.status_code)[0] == "2":
+                if (
+                    str(
+                        requests.put(upload_url, data=data, headers=headers).status_code
+                    )[0]
+                    == "2"
+                ):
                     outcome = True
         except FileNotFoundError:
             raise ElmwareStorageError("Invalid File Path")
