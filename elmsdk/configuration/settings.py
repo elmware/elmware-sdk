@@ -16,10 +16,10 @@ MAX_CONNECTIVITY_RETRY = 3
 API_RETRY_DELAY = 5
 
 # sleep time while waiting for task from server in seconds
-TASK_WAIT_SLEEP = 3
+TASK_WAIT_SLEEP = 2
 
 # request timeout
-TIMEOUT_SETTINGS = (3.05, 60)
+TIMEOUT_SETTINGS = (3.05, 120)
 
 # Headers used for get requests
 GET_HEADERS = {"Content-type": "application/json"}
