@@ -7,7 +7,7 @@ Settings for API and connectivity
 """
 
 # root url for application
-API_ROOT = "https://www.elmware.com"
+API_ROOT = "https://containers.elmware.com"
 
 # max number of times the app will retry a request due to lack of connectivity
 MAX_CONNECTIVITY_RETRY = 3
