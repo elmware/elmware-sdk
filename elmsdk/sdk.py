@@ -48,9 +48,22 @@ class ELMSDK:
             if results.get(k, None) is not None
         }
 
+    def push_notification(self, message):
+        """
+        This method can only be called during a cron run.  It will send a message to the user.
+        """
+        results = APIRequests.post_request(
+            "push_notification",
+            self.instance_key,
+            data={"message": message},
+            dev_mode=self.dev_mode,
+            url_override=self.url_override,
+        )
+        return True
+
     def find_callback_url(self):
         """
-        This method returns a callback url that can be used for external webhooks, an email address that will forward to the same webhood, and a retreival key
+        This method returns a callback url that can be used for external webhooks, an email address that will forward to the same webhook, and a retreival key
 
         returns a dictionary with keys url key, and email
         """
@@ -63,6 +76,24 @@ class ELMSDK:
         return {
             k: results.get(k, None)
             for k in ["url", "key", "email"]
+            if results.get(k, None) is not None
+        }
+
+    def find_callback_redirect_url(self):
+        """
+        This method returns a callback url that can be used for external webhooks,  and a retreival key.  In this case, though the callback url will always be the same (/appstash).  The callback must be made by an authenticated user.
+
+        returns a dictionary with keys url & key
+        """
+        results = APIRequests.get_request(
+            "find_callback_redirect_url",
+            self.instance_key,
+            dev_mode=self.dev_mode,
+            url_override=self.url_override,
+        )
+        return {
+            k: results.get(k, None)
+            for k in ["url", "key"]
             if results.get(k, None) is not None
         }
 
@@ -137,7 +168,7 @@ class ELMSDK:
 
     def del_perm_file(self, file_key):
         """
-        This method will upload a file to storage.  It returns a key that can be used to retreive the file later.  setting is_perm to true will cause the file to persist indefinitely.  otherwise it is deleted after 24 hours.
+        This method deletes a file in storage.  It can only be called on permenent files.  It takes the file key as an arg
         """
         results = APIRequests.post_request(
             "del_perm_file",

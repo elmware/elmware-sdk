@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="elmsdk",
-    version="0.3.3",
+    version="0.3.4",
     author="Elmware",
     author_email="support@elmware.com",
     description="SDK for running docker containers on elmware",
